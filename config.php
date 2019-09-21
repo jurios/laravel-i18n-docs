@@ -3,8 +3,8 @@
 return [
     'baseUrl' => '',
     'production' => false,
-    'siteName' => 'Docs Starter Template',
-    'siteDescription' => 'Beautiful docs powered by Jigsaw',
+    'siteName' => 'Laravel i18n',
+    'siteDescription' => 'Manage translations easily in Laravel',
 
     // Algolia DocSearch credentials
     'docsearchApiKey' => '',
