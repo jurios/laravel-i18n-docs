@@ -47,6 +47,7 @@ The `data` attributes (marked with `*` the mandatory items. Optional default val
     'language'* =>, // Language code
     'region' => null, // Country/Region code
     'description' => null, //Brief description
+    'laravel_locale' => null, //Locale loaded by Laravel. If null, locale reference is used
     'currency_number_decimals' => 2, // Decimals when represent a number using __number() or __price()
     'currency_decimals_punctuation' => '.', // Decimal punctuation when represent a number using __number() or __price()
     'currency_thousands_separator' => '', // Thousands separator when represents a number using __number() or __price() 
@@ -81,6 +82,7 @@ class CreateLocale extends Migration
             'currency_symbol' => '£',
             'currency_symbol_position' => 'before',
             'carbon_locale' => 'en',
+            'laravel_locale' => null,
             'tz' => 'Europe/London',
             'enabled' => true
         ]);
@@ -92,8 +94,8 @@ class CreateLocale extends Migration
 `Laravel i18n` provides a helper method in order to remove `locales`. This method uses `QueryBuilder` under the hood 
 thus can be used in `migration files`:
 
-### i18nBuilder::removeLocale(string $name);
-This methods will remove the locale which name is `$name` if the locale exists and is not the `fallback locale`.
+### i18nBuilder::removeLocale(string $reference);
+This methods will remove the locale which reference is `$reference` if the locale exists and is not the `fallback locale`.
 
 Example:
 
@@ -114,8 +116,8 @@ class CreateLocale extends Migration
 
 ## Retrieving locales {#retrieving-locales}
 
-### Locale::getLocale(string $name)
-It returns a locale which `name=$name` or `null`.
+### Locale::getLocale(string $reference)
+It returns a locale which `reference=$reference` or `null`.
 
 Example:
 ```
@@ -131,8 +133,8 @@ Example:
 $fallback = Locale::getFallbackLocale(); //Locale instance
 ```
 
-### Locale::getLocaleOrFallback(string $name)
-The same as `Locale::getLocale(string $name)` but the `fallback locale` is returned if does not exist.
+### Locale::getLocaleOrFallback(string $reference)
+The same as `Locale::getLocale(string $reference)` but the `fallback locale` is returned if does not exist.
 
 ```
 $locale = Locale::getLocaleOrFallback('es'); //'es' does not exist, then fallback is returned
