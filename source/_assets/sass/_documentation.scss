@@ -1,1 +1,7 @@
 // Add your custom styles here
+
+#doc {
+  ol, ul {
+    @apply list-disc ml-8;
+  }
+}

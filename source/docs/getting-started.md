@@ -1,77 +1,31 @@
 ---
 title: Getting Started
-description: Getting started with Jigsaw's docs starter template is as easy as 1, 2, 3.
+description: Getting started with Laravel i18n package.
 extends: _layouts.documentation
 section: content
 ---
 
 # Getting Started {#getting-started}
 
-This is a starter template for creating a beautiful, customizable documentation site for your project with minimal effort. You’ll only have to change a few settings and you’re ready to go.
+`Laravel i18n` is a laravel package which provides additional features to the Laravel out of the box localization system.
 
-## Configuration {#getting-started-configuration}
+Those are the main features:
 
-As with all Jigsaw sites, configuration settings can be found in `config.php`; you can update the variables in that file with settings specific to your project. You can also add new configuration variables there to use across your site; take a look at the [Jigsaw documentation](http://jigsaw.tighten.co/docs/site-variables/) to learn more.
+* Translation files generation based on the `locales` defined
+* `locale` capabilities to work with specific timezones, currency and number format (decimals, punctuation and so on...)
+* Automatically translatable text detection (calls to `__()` method) which will keep your translation files updated. 
+    It detects 3th-party package exported translations also.
+* Deprecated translations detection
+* `Eloquent Models` translation attributes capabilities.
+* Optional full customizable and full integrable web editor
 
-```php
-// config.php
-return [
-    'baseUrl' => 'https://my-awesome-jigsaw-site.com/',
-    'production' => false,
-    'siteName' => 'My Site',
-    'siteDescription' => 'Give your documentation a boost with Jigsaw.',
-    'docsearchApiKey' => '',
-    'docsearchIndexName' => '',
-    'navigation' => require_once('navigation.php'),
-];
-```
+#### A note about locales
+`locale` represents a language and, at the same time, might represents a currency, number formatting
+(decimals, punctuation and so on...) and timezone. Due to that, `laravel i18n` is full compatible with 
+specific-regional locales. That means that you can create locales which represents a language 
+(`en` would represent English) and/or locales which represents a language from a region/country 
+(`en_GB` would represents English from Great Britain). The language code is always written using lowercase and the region,
+separated by `_`, is always written in uppercase.
 
-> Tip: This configuration file is also where you’ll define any "collections" (for example, a collection of the contributors to your site, or a collection of blog posts). Check out the official [Jigsaw documentation](https://jigsaw.tighten.co/docs/collections/) to learn more.
 
----
-
-### Adding Content {#getting-started-adding-content}
-
-You can write your content using a [variety of file types](http://jigsaw.tighten.co/docs/content-other-file-types/). By default, this starter template expects your content to be located in the `source/docs` folder. If you change this, be sure to update the URL references in [navigation.php](/docs/navigation.php).
-
-[Read more about navigation.](/docs/navigation)
-
-The first section of each content page contains a YAML header that specifies how it should be rendered. The `title` attribute is used to dynamically generate HTML `title` and OpenGraph tags for each page. The `extends` attribute defines which parent Blade layout this content file will render with (e.g. `_layouts.documentation` will render with `source/_layouts/documentation.blade.php`), and the `section` attribute defines the Blade "section" that expects this content to be placed into it.
-
-```yaml
----
-title: Navigation
-description: Building a navigation menu for your site
-extends: _layouts.documentation
-section: content
----
-```
-
-[Read more about Jigsaw layouts.](https://jigsaw.tighten.co/docs/content-blade/)
-
----
-
-### Adding Assets {#getting-started-adding-assets}
-
-Any assets that need to be compiled (such as JavaScript, Less, or Sass files) can be added to the `source/_assets/` directory, and Laravel Mix will process them when running `npm run local` or `npm run production`. The processed assets will be stored in `/source/assets/build/` (note there is no underscore on this second `assets` directory).
-
-Then, when Jigsaw builds your site, the entire `/source/assets/` directory containing your built files (and any other directories containing static assets, such as images or fonts, that you choose to store there) will be copied to the destination build folders (`build_local`, on your local machine).
-
-Files that don't require processing (such as images and fonts) can be added directly to `/source/assets/`.
-
-[Read more about compiling assets in Jigsaw using Laravel Mix.](http://jigsaw.tighten.co/docs/compiling-assets/)
-
----
-
-## Building Your Site {#getting-started-building-your-site}
-
-Now that you’ve edited your configuration variables and know how to customize your styles and content, let’s build the site.
-
-```bash
-# build static files with Jigsaw
-./vendor/bin/jigsaw build
-
-# compile assets with Laravel Mix
-# options: dev, staging, production
-npm run dev
-```
+Please, follow the [installation instructions](#) in order to add `laravel-i18n` package in your laravel project!

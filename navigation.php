@@ -1,14 +1,16 @@
 <?php
 
 return [
-    'Getting Started' => [
-        'url' => 'docs/getting-started',
+    'Getting Started' => 'docs/getting-started',
+    'Installation' => 'docs/installation',
+    'Locales' => [
+        'url' => 'docs/locales',
         'children' => [
-            'Customizing Your Site' => 'docs/customizing-your-site',
-            'Navigation' => 'docs/navigation',
-            'Algolia DocSearch' => 'docs/algolia-docsearch',
-            'Custom 404 Page' => 'docs/custom-404-page',
-        ],
+            'Creating locales' => '/docs/locales#creating-locales',
+            'Removing locales' => '/docs/locales#removing-locales',
+            'Retrieving locales' => '/docs/locales#retrieving-locales'
+        ]
     ],
-    'Jigsaw Docs' => 'https://jigsaw.tighten.co/docs/installation',
+    'Sync process' => 'docs/sync',
+    'Model translations' => 'docs/model-translations'
 ];
