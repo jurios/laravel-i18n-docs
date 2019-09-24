@@ -13,10 +13,11 @@ user wants to see in their user interface (from [Wikipedia](https://en.wikipedia
 In `Laravel i18n` a locale represents the language and the currency, number formatting (decimals, punctuation 
 and so on...) and timezone also.
 
-A locale is identified by its `reference` which follows the format: `[language[_territory]]` being language the 
+A locale is identified by its `reference` which follows the format: `[language[_REGION]]` being language the 
 language code (based on the [ISO 639-1:2002](https://en.wikipedia.org/wiki/ISO_639-1)) using lowercase letters and the 
-optional `region` attribute (based on the [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)) 
-using uppercase letters. 
+optional `region` a region/country code (based on the [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)) 
+using uppercase letters.
+ 
 For example, if your `language` is `en` and your region is `GB`, then the `locale reference` would be `en_GB`. 
 If your don't define the `region`, then would be `en`.
 
@@ -43,7 +44,7 @@ This methods will create a locale and assign the attributes from the `$data` arr
 The `data` attributes (marked with `*` the mandatory items. Optional default values are indicated):
 ```
 [
-    'iso'* =>, // Language code
+    'language'* =>, // Language code
     'region' => null, // Country/Region code
     'description' => null, //Brief description
     'currency_number_decimals' => 2, // Decimals when represent a number using __number() or __price()
@@ -51,7 +52,7 @@ The `data` attributes (marked with `*` the mandatory items. Optional default val
     'currency_thousands_separator' => '', // Thousands separator when represents a number using __number() or __price() 
     'currency_symbol' => €, // Currency symbol when represents a number using __price()
     'currency_symbol_position' => 'after', // Currency symbol position after the value or before when using __price()
-    'carbon_locale' => null, // Carbon locale. If null, iso value will be used
+    'carbon_locale' => null, // Carbon locale. If null, language attribute will be used
     'tz' => 'UTC', // Timezone when use DateTime functions (Carbon included)
     'enabled' => true
 ]
@@ -71,7 +72,7 @@ class CreateLocale extends Migration
     public function up()
     {
         i18nBuilder::createLocale([
-            'iso' => 'en',
+            'language' => 'en',
             'region' => 'GB',
             'description' => 'English',
             'currency_number_decimals' => 2,
