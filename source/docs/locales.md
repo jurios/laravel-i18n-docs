@@ -46,6 +46,7 @@ The `data` attributes (marked with `*` the mandatory items. Optional default val
 [
     'language'* =>, // Language code
     'region' => null, // Country/Region code
+    'name' => null, // Locale name. If null, then locale reference is used
     'description' => null, //Brief description
     'laravel_locale' => null, //Locale loaded by Laravel. If null, locale reference is used
     'currency_number_decimals' => 2, // Decimals when represent a number using __number() or __price()
@@ -75,6 +76,7 @@ class CreateLocale extends Migration
         i18nBuilder::createLocale([
             'language' => 'en',
             'region' => 'GB',
+            'name' => 'English from GB',
             'description' => 'English',
             'currency_number_decimals' => 2,
             'currency_decimals_punctuation' => '.',
