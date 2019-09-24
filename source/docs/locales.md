@@ -56,7 +56,6 @@ The `data` attributes (marked with `*` the mandatory items. Optional default val
     'currency_symbol_position' => 'after', // Currency symbol position after the value or before when using __price()
     'carbon_locale' => null, // Carbon locale. If null, language attribute will be used
     'tz' => 'UTC', // Timezone when use DateTime functions (Carbon included)
-    'enabled' => true
 ]
 ```
 
@@ -85,8 +84,7 @@ class CreateLocale extends Migration
             'currency_symbol_position' => 'before',
             'carbon_locale' => 'en',
             'laravel_locale' => null,
-            'tz' => 'Europe/London',
-            'enabled' => true
+            'tz' => 'Europe/London'
         ]);
     }
 }
