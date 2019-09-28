@@ -8,7 +8,8 @@ return [
         'children' => [
             'Creating locales' => '/docs/locales#creating-locales',
             'Removing locales' => '/docs/locales#removing-locales',
-            'Retrieving locales' => '/docs/locales#retrieving-locales'
+            'Retrieving locales' => '/docs/locales#retrieving-locales',
+            'Locale Factory' => '/docs/locales#locale-factory'
         ]
     ],
     'Sync process' => 'docs/sync',

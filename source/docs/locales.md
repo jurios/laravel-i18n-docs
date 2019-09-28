@@ -8,135 +8,121 @@ section: content
 # Locales {#getting-started}
 
 A `locale` is a set of parameters that defines the user's language, region and any special variant preferences that the
-user wants to see in their user interface (from [Wikipedia](https://en.wikipedia.org/wiki/Locale_(computer_software)).
+user wants to see in their user interface.
  
-In `Laravel i18n` a locale represents the language and the currency, number formatting (decimals, punctuation 
-and so on...) and timezone also.
+In Laravel i18n a `locale` might contains language, currency symbol, number formatting (decimals, punctuation 
+and so on...) and timezone information.
 
-A locale is identified by its `reference` which follows the format: `[language[_REGION]]` being language the 
+The `locales` are persisted on database in the `locales` table which has been created during the `install` process.
+
+When you want to use a `locale` on your project, you must create it first.
+
+## Locale identification
+A locale is identified by its `reference` which follows the format: `language[_TERRITORY]` being language the 
 language code (based on the [ISO 639-1:2002](https://en.wikipedia.org/wiki/ISO_639-1)) using lowercase letters and the 
 optional `region` a region/country code (based on the [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)) 
 using uppercase letters.
+
+However, `reference` is not a regular attribute. It's generated (is an [accessor](#)) based on the `language` and `region`
+attribute. 
  
-For example, if your `language` is `en` and your region is `GB`, then the `locale reference` would be `en_GB`. 
-If your don't define the `region`, then would be `en`.
+For example, if your `$locale->language = en` and `$locale->region = GB`, then the `$locale->reference === 'en_GB'`. 
+If your don't define the `region`, then `$locale->reference === 'en'`.
 
-##### The fallback locale
+#### The fallback locale
 There is an special locale which is the `fallback locale`. This `locale` will be used as a default `locale` when a text
-is not translated or a request is loading a `locale` which doesn't exist.
+is not translated or during the request a `locale` doesn't exist.
 
-Apart from that, `laravel i18n` will consider that the texts found as translatable in your project during the `sync` are 
-written in the `fallback locale` language. Therefore, all texts found will have empty translations in each `locale`
-translation file except in the `fallback locale` where the text will be used as translation.
+At least a `fallback locale` must exists. You won't be able to remove a `fallback locale` using the methods that
+Laravel i18n provides for deleting locales. However, you can create a new `fallback locale` (which remove the `fallback`
+label to the previous one) and then, remove the previous `locale`.
 
-As the `fallback locale` concept is already used by Laravel, you can modify it through the `fallback_locale` parameter 
-in `config/app.php`. You must know that the referenced `locale` must exists, otherwise `laravel i18n` will fail.
-However, the `sync` process will check the `fallback locale` existence and if it doesn't exist, it creates the 
-`locale` for you. Therefore, is a good idea run a `sync` after modify the `fallback locale` just to be sure.
+## Locale attributes
+A `locale` is an `Eloquen model` which has the following attributes (marked with `*` the mandatory items. 
+Default values are indicated):
 
-## Creating locales {#creating-locales}
-`Laravel i18n` provides a helper method in order to create `locales`. This method uses `QueryBuilder` under the hood 
-thus can be used in `migration files`:
-
-### i18nBuilder::createLocale(array $data);
-This methods will create a locale and assign the attributes from the `$data` array. 
-
-The `data` attributes (marked with `*` the mandatory items. Optional default values are indicated):
-```
+```(php)
 [
-    'language'* =>, // Language code
+    *'language' =>, // Language code
     'region' => null, // Country/Region code
     'name' => null, // Locale name. If null, then locale reference is used
-    'description' => null, //Brief description
-    'laravel_locale' => null, //Locale loaded by Laravel. If null, locale reference is used
-    'currency_number_decimals' => 2, // Decimals when represent a number using __number() or __price()
-    'currency_decimals_punctuation' => '.', // Decimal punctuation when represent a number using __number() or __price()
-    'currency_thousands_separator' => '', // Thousands separator when represents a number using __number() or __price() 
+    'fallback' => false, //Indicates whether the locale is the fallback locale
+    'laravel_locale' => null, // Value set in the Laravel locale setting
+    'decimals' => 2, // Decimals when represent a number using __number() or __price()
+    'decimals_punctuation' => '.', // Decimal punctuation when represent a number using __number() or __price()
+    'thousands_separator' => '', // Thousands separator when represents a number using __number() or __price() 
     'currency_symbol' => €, // Currency symbol when represents a number using __price()
     'currency_symbol_position' => 'after', // Currency symbol position after the value or before when using __price()
     'carbon_locale' => null, // Carbon locale. If null, language attribute will be used
     'tz' => 'UTC', // Timezone when use DateTime functions (Carbon included)
 ]
 ```
+A few notes about those attributes:
 
-Example:
-```
-use Kodilab\LaravelI18n\Builder\i18nBuilder;  
+* **laravel_locale**: Laravel i18n uses the out of the box Laravel localization system under the hood. Due to that, when
+a `locale` is loaded to be used in a request, the `locale parameter` in the Laravel configuration must be changed to 
+set the chosen locale. By default, the `reference` value is set. However, you can define what value should be set in 
+the Laravel setting through the `laravel_locale` attribute.
 
-class CreateLocale extends Migration 
-{
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
-        i18nBuilder::createLocale([
-            'language' => 'en',
-            'region' => 'GB',
-            'name' => 'English from GB',
-            'description' => 'English',
-            'currency_number_decimals' => 2,
-            'currency_decimals_punctuation' => '.',
-            'currency_thousands_separator' => ',', 
-            'currency_symbol' => '£',
-            'currency_symbol_position' => 'before',
-            'carbon_locale' => 'en',
-            'laravel_locale' => null,
-            'tz' => 'Europe/London'
-        ]);
-    }
-}
-```
-
-## Removing locales {#removing-locales}
-`Laravel i18n` provides a helper method in order to remove `locales`. This method uses `QueryBuilder` under the hood 
-thus can be used in `migration files`:
-
-### i18nBuilder::removeLocale(string $reference);
-This methods will remove the locale which reference is `$reference` if the locale exists and is not the `fallback locale`.
-
-Example:
+## Creating and removing a locale
+You can create a `Locale` using the `Eloquent Model` method for creating. What's more, Laravel i18n provides an artisan
+`command` for creating and removing locales quickly:
 
 ```
-class CreateLocale extends Migration 
-{
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        i18nBuilder::removeLocale('en_GB');
-    }
-}
+php artisan make:locale
+            {--reference= : Locale reference}
+            {--name= : Locale name}
+            {--fallback= : (true|false) Set the locale as fallback locale}
+            {--laravel-locale= : Laravel locale setting value}
+            {--carbon-locale= : Laravel locale setting value}
+            {--tz= : Locale timezone}
+            {--decimals= : Decimals when show float values}
+            {--decimals-punctuation= : Decimals when show localized float values}
+            {--thousands-separator= : Thousands separator when show localized values}
+            {--currency-symbol= : Currency symbol when show localized currency value}
+            {--currency_symbol_position= : Currency symbol position when show a localized currency value (after|before)}'
+```
+
+## Removing a locale
+```
+php artisan locale:remove reference
 ```
 
 ## Retrieving locales {#retrieving-locales}
+The `Locale` model contains some static helper methods to retrieve `locales`:
 
-### Locale::getLocale(string $reference)
-It returns a locale which `reference=$reference` or `null`.
+```(php)
+    /**
+     * Get the fallback locale. If it does not exits, then an exception is sent.
+     *
+     * @return Locale
+     * @throws MissingFallbackLocaleException
+     */
+    public static function getFallbackLocale()
 
-Example:
+    /**
+     * Returns a locale by reference. If it does not exist, then null is returned.
+     *
+     * @param string $reference
+     * @return mixed
+     */
+    public static function getLocale(string $reference)
+    
+    /**
+     * Returns a locale by reference. If it does not exist, then fallback locale is returned
+     *
+     * @param string $reference
+     * @return Locale
+     * @throws MissingFallbackLocaleException
+     */
+    public static function getLocaleOrFallback(string $reference)
 ```
-$locale = Locale::getLocale('en_GB'); //Locale instance
-```
 
-
-### Locale::getFallbackLocale()
-Returns the `Locale` instance of the `fallback_locale`:
-
-Example:
-```
-$fallback = Locale::getFallbackLocale(); //Locale instance
-```
-
-### Locale::getLocaleOrFallback(string $reference)
-The same as `Locale::getLocale(string $reference)` but the `fallback locale` is returned if does not exist.
+## Locale factory {#locale-factory}
+If you need a `locale factory`, you can use the following `artisan command` in order to generate it:
 
 ```
-$locale = Locale::getLocaleOrFallback('es'); //'es' does not exist, then fallback is returned
+php artisan locale:factory
 ```
 
+A new factory will be generated in `database/factories/LocaleFactory.php`.
