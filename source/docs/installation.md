@@ -18,12 +18,31 @@ TODO
 composer require kodilab/laravel-i18n
 ```
 
-## Install
-The installation process will make the following actions:
+## Publish migrations
+`Laravel i18n` will use a database table for persist the `locales`. In order to create it, a migration file must be
+created.
 
-* Generates the migrations needed by Laravel i18n
+```
+php artisan i18n:migrations
+```
+
+A group of migration files will be added in your `database/migrations` directory. Those migrations will create 
+the table and the [`fallback locale`](#).
+
+By convention, the locale table name is `locales`. You can change the name through the 
+[laravel-i18n configuration file](#).
+
+The `fallback locale` will be created based on the `fallback_locale` parameter in your `config/app.php` file. If you want
+to modify the `fallback_locale` attributes you can do it modifying the migration file called 
+`*_create_i18n_fallback_locale.php`. 
+ 
+You can change the `locales` table name through the [laravel-i18n configuration file](#).
+
+
+## Install
+The install process will perform the following tasks:
+
 * Apply the migrations
-* `fallback locale` creation
 * Start a `sync` process (this process parses your project files in order to find new translatable texts).
 * Add the `i18nServiceProvicer` to the providers in your `config/app.php` file
 
@@ -32,8 +51,6 @@ You can install with:
 ```
 php artisan i18n:install
 ```
-
-During the process, it will ask for a `locale reference` in order to create your `fallback locale`.
 
 As the sync process has been called, a new file should be generated in `resources/lang/{fallback_locale}.json` 
 with all the texts found. As `laravel i18n` only works with JSON files, 
