@@ -1,0 +1,9 @@
+.idea/
+/build_local/
+/build_staging/
+/build_production/
+/build_staging/
+/node_modules/
+/vendor/
+.DS_Store
+/source/assets/build/
