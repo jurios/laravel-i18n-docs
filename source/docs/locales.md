@@ -17,19 +17,20 @@ The `locales` are persisted on database in the `locales` table which has been cr
 
 You can create as `locale` as your project needs.
 
-## Locale identification
+## Locale identification {#locale-identification}
 A locale is identified by its `reference` attribute which follows the format: `language[_REGION]` being language the 
 language code (based on the [ISO 639-1:2002](https://en.wikipedia.org/wiki/ISO_639-1)) using lowercase letters and the 
 optional `region` a region/country code (based on the [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)) 
 using uppercase letters.
 
-However, `reference` is not a regular attribute. It's generated (is an [accessor](#)) based on the `language` and `region`
-attribute. So you only have to handle `language` and `region` attributes.
+However, `reference` is not a regular attribute. It's generated 
+(is an [accessor](https://laravel.com/docs/6.x/eloquent-mutators#accessors-and-mutators)) based on the `language` 
+and `region` attribute. So you only have to handle `language` and `region` attributes.
  
 For example, if your `$locale->language = en` and `$locale->region = GB`, then the `$locale->reference === 'en_GB'`. 
 If your don't define the `region`, then `$locale->reference === 'en'`.
 
-## The fallback locale
+## The fallback locale {#the-fallback-locale}
 There is an special locale which is the `fallback locale`. This `locale` will be used as a default `locale` when a text
 is not translated or during the request a `locale` doesn't exist.
 
@@ -37,7 +38,7 @@ At least a `fallback locale` must exists. You won't be able to remove a `fallbac
 Laravel i18n provides for deleting locales. However, you can create a new `fallback locale` (which remove the `fallback`
 label to the previous one) and then, remove the previous `locale`.
 
-## Locale attributes
+## Locale attributes {#locale-attributes}
 A `locale` is an `Eloquen model` which has the following attributes (marked with `*` the mandatory items. 
 Default values are indicated):
 
@@ -129,8 +130,12 @@ php artisan locale:factory
 A new factory will be generated in `database/factories/LocaleFactory.php`.
 
 ## Locales and requests {#locales-and-requests}
-When laravel i18n is installed, you don't need to change the `locale` and `fallback_locale` 
-parameters in the `config/app.php`. A `i18nManager` service is added to the container in order to handle this for you.
+`Laravel i18n` uses the Laravel out of the box localization system under the hood. That means that to set which `locale`
+is going to be used during the request it must be done [through the `locale` and `fallback_locale` parameters in the 
+`config/app.php` file](https://laravel.com/docs/6.x/localization#configuring-the-locale). 
+
+However instead of dealing with it, `laravel i18n` provides a service which set that parameters based on the `locale`
+you provide:  
 
 If you want to change the locale during a request, you can do it just using the service:
 
@@ -148,7 +153,9 @@ i18n::setLocale($locale)
 The best way to handle the locale used in a `request` is through a `middleware` which set the locale based on the
 request. You can create your own `middleware` or extending the `SetLocale` middleware provided in `laravel i18n`.
 
-You can overwrite the `locale()` to change the locale setting. This method should return a `locale` instance.
+If you extends the `SetLocale` middleware, you can overwrite the `locale()` method to change the locale used. 
+This method should return a `locale` instance. 
+
 By default, the `timezone` set is the defined by the `locale`. However, you can extend `timezone(Locale $locale)` 
 method if you want to customize the `timezone`. The `locale` argument is the `locale` returned by `locale()`. 
 
@@ -174,3 +181,6 @@ class newMiddleware extends SetLocale
     }
 }
 ```
+
+Don't forget to [register the middleware](https://laravel.com/docs/6.x/middleware#registering-middleware) 
+in order to be used.

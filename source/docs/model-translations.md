@@ -123,11 +123,12 @@ $car->getTranslatedAttribute($locale, 'description') // It will return the loade
 $car->description // It will return the same result
 ```
 
-When you use that feature, the `locale` used is the locale which is [being used during the request](#). 
+When you use that feature, the `locale` used would be the locale set 
+[during the request](/docs/locales#locales-and-requests). 
 If the translation is not available for that `locale`, then `fallback locale` is used.
 
 If your `Model` is already extending `__get(string $name)` method, then you need to add the following snippet 
-in your `__get(string $name)` method in order to allow translatable attribute forwarding:
+in your `__get(string $name)` method in order to allow translatable attribute being forwarded:
 
 ```
 public function __get($name)

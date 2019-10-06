@@ -30,4 +30,4 @@ specific-regional locales. Therefore a locale contains three important attribute
 That means that you can work with locales which represents a language (`en` would represent English) and/or 
 locales which represents a language from a region/country (`en_GB` would represents English from Great Britain). 
 
-Please, follow the [installation instructions](#) in order to add `laravel-i18n` package in your laravel project!
+Please, follow the [installation instructions](/docs/installation) in order to add `laravel-i18n` package in your laravel project!
