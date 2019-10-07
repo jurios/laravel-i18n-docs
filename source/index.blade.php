@@ -13,7 +13,7 @@
             <div class="flex my-10 items-center justify-center lg:justify-start">
                 <a href="/docs/getting-started" title="{{ $page->siteName }} getting started" class="bg-red-500 hover:bg-red-600 font-normal text-white hover:text-white rounded mr-4 py-2 px-6">Get Started</a>
 
-                <a href="#" title="Laravel i18n by Kodilab" class="bg-gray-400 hover:bg-gray-600 text-blue-900 font-normal hover:text-white rounded py-2 px-6">About Kodilab</a>
+                <a href="https://kodilab.com/" title="Laravel i18n by Kodilab" class="bg-gray-400 hover:bg-gray-600 text-blue-900 font-normal hover:text-white rounded py-2 px-6">About Kodilab</a>
             </div>
         </div>
 
